@@ -17,6 +17,8 @@
 #   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 #   02110-1301, USA.
 
+bareos_template("include/config.h.in")
+
 if(NOT client-only)
   add_subdirectory(tools)
   add_subdirectory(cats)

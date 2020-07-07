@@ -34,3 +34,20 @@ foreach(in_file ${IN_FILES})
   message(STATUS "creating file ${file}")
   configure_file(${in_file} ${file} @ONLY)
 endforeach()
+
+function(bareos_template templates)
+  foreach(in_template ${templates})
+    get_filename_component(template_fullpath ${in_template} ABSOLUTE)
+    string(
+      REGEX
+      REPLACE
+        ".in\$"
+        ""
+        file_srcpath
+        ${template_fullpath}
+    )
+    string(REPLACE "${CMAKE_CURRENT_SOURCE_DIR}" "${CMAKE_CURRENT_BINARY_DIR}" file_dstpath ${file_srcpath})
+    message(STATUS "creating file ${file_dstpath}")
+    configure_file(${template_fullpath} ${file_dstpath} @ONLY)
+  endforeach()
+endfunction()
