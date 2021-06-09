@@ -202,6 +202,6 @@ if(${ZLIB_FOUND})
   set(HAVE_LIBZ 1)
 endif()
 
-find_package(Readline)
+find_package(Readline REQUIRED)
 find_package(Jansson)
 include(thread)
