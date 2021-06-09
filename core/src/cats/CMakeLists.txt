@@ -18,11 +18,11 @@
 #   02110-1301, USA.
 message("Entering ${CMAKE_CURRENT_SOURCE_DIR}")
 
-include_directories(${MYSQL_INCLUDE_DIR} ${PostgreSQL_INCLUDE_DIR})
 
 add_definitions(-D_BDB_PRIV_INTERFACE_)
 
-set(LIBBAREOSSQL_SRCS
+add_library(bareossql SHARED)
+target_sources(bareossql PRIVATE
     bvfs.cc
     cats.cc
     sql.cc
@@ -35,15 +35,6 @@ set(LIBBAREOSSQL_SRCS
     sql_query.cc
     sql_update.cc
 )
-set(LIBBAREOSCATS_SRCS cats_backends.cc)
-
-set(SQLITE_SRCS sqlite.cc ${LIBBAREOSCATS_SRCS})
-
-set(MYSQL_SRCS mysql.cc mysql_batch.cc ${LIBBAREOSCATS_SRCS})
-
-set(POSTGRESQL_SRCS postgresql.cc postgresql_batch.cc ${LIBBAREOSCATS_SRCS})
-
-add_library(bareossql SHARED ${LIBBAREOSSQL_SRCS})
 
 set_target_properties(
   bareossql PROPERTIES VERSION "${BAREOS_NUMERIC_VERSION}"
@@ -58,7 +49,8 @@ target_link_libraries(bareossql bareoscats bareos)
 
 list(LENGTH db_backends nr_db_backends)
 
-add_library(bareoscats SHARED ${LIBBAREOSCATS_SRCS})
+add_library(bareoscats SHARED)
+target_sources(bareoscats PRIVATE cats_backends.cc)
 target_link_libraries(bareoscats bareos)
 set_target_properties(
   bareoscats PROPERTIES VERSION ${BAREOS_NUMERIC_VERSION}
@@ -67,7 +59,8 @@ set_target_properties(
 install(TARGETS bareoscats DESTINATION ${libdir})
 
 if(HAVE_SQLITE3)
-  add_library(bareoscats-sqlite3 MODULE ${SQLITE_SRCS})
+  add_library(bareoscats-sqlite3 MODULE)
+  target_sources(bareoscats-sqlite3 PRIVATE sqlite.cc cats_backends.cc)
   target_link_libraries(bareoscats-sqlite3 bareossql bareos sqlite3)
   install(TARGETS bareoscats-sqlite3 DESTINATION ${backenddir})
 
@@ -79,9 +72,11 @@ if(HAVE_SQLITE3)
   )
 endif()
 
-if(HAVE_MYSQL)
-  add_library(bareoscats-mysql MODULE ${MYSQL_SRCS})
-  target_link_libraries(bareoscats-mysql bareossql bareos ${MYSQL_LIBRARIES})
+if(mysql)
+  find_package(MySQL REQUIRED)
+  add_library(bareoscats-mysql MODULE)
+  target_sources(bareoscats-mysql PRIVATE mysql.cc mysql_batch.cc cats_backends.cc)
+  target_link_libraries(bareoscats-mysql PRIVATE bareossql bareos MySQL::MySQL)
   install(TARGETS bareoscats-mysql DESTINATION ${backenddir})
 
   install(
@@ -92,10 +87,14 @@ if(HAVE_MYSQL)
   )
 endif()
 
-if(HAVE_POSTGRESQL)
-  add_library(bareoscats-postgresql MODULE ${POSTGRESQL_SRCS})
+if(postgresql)
+if(NOT ${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+  find_package(PostgreSQL REQUIRED)
+endif()
+  add_library(bareoscats-postgresql MODULE)
+  target_sources(bareoscats-postgresql PRIVATE postgresql.cc postgresql_batch.cc cats_backends.cc)
   target_link_libraries(
-    bareoscats-postgresql bareossql bareos ${PostgreSQL_LIBRARY}
+    bareoscats-postgresql PRIVATE bareossql bareos PostgreSQL::PostgreSQL
   )
   install(TARGETS bareoscats-postgresql DESTINATION ${backenddir})
 
