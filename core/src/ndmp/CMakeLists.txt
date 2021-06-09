@@ -161,6 +161,10 @@ set(LIBBAREOSNDMP_SRCS ${NDMP_PROTO_SRCS} ${NDMP_LIB_SRCS} ${NDMP_AGENT_SRCS}
                        ${NDMP_HELPER_SRCS}
 )
 
+if(NOT RPCGEN)
+  message(FATAL_ERROR "Cannot build NDMP, because rpcgen program not available.")
+endif()
+
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
   set(RPCGEN_PARAMS "-C")
 else()
