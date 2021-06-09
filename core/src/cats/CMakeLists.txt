@@ -58,10 +58,11 @@ set_target_properties(
 )
 install(TARGETS bareoscats DESTINATION ${libdir})
 
-if(HAVE_SQLITE3)
+if(sqlite3)
+  find_package(SQLite3 REQUIRED)
   add_library(bareoscats-sqlite3 MODULE)
   target_sources(bareoscats-sqlite3 PRIVATE sqlite.cc cats_backends.cc)
-  target_link_libraries(bareoscats-sqlite3 bareossql bareos sqlite3)
+  target_link_libraries(bareoscats-sqlite3 bareossql bareos SQLite::SQLite3)
   install(TARGETS bareoscats-sqlite3 DESTINATION ${backenddir})
 
   install(
