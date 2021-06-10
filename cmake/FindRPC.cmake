@@ -92,7 +92,7 @@ if(RPC_FOUND AND NOT TARGET RPC::RPC)
   add_library(RPC::RPC UNKNOWN IMPORTED)
   set_target_properties(
     RPC::RPC PROPERTIES INTERFACE_INCLUDE_DIRECTORIES
-    "${RPC_INCLUDE_DIRS}"
+    "${RPC_INCLUDE_DIR}"
   )
   if(RPC_LIBRARY)
     set_property(
