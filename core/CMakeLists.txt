@@ -241,7 +241,6 @@ endif()
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
   set(HAVE_LINUX_OS 1)
-  include_directories(/usr/include/tirpc)
 endif()
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "SunOS")

@@ -161,6 +161,8 @@ set(LIBBAREOSNDMP_SRCS ${NDMP_PROTO_SRCS} ${NDMP_LIB_SRCS} ${NDMP_AGENT_SRCS}
                        ${NDMP_HELPER_SRCS}
 )
 
+find_package(RPC REQUIRED)
+
 if(NOT RPCGEN)
   message(FATAL_ERROR "Cannot build NDMP, because rpcgen program not available.")
 endif()
@@ -187,7 +189,7 @@ endforeach()
 
 add_library(bareosndmp SHARED ${LIBBAREOSNDMP_SRCS} ${RPC_GEN_FILES})
 target_include_directories(bareosndmp PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
-target_link_libraries(bareosndmp ${WRAP_LIBS} ${TIRPC_LIBRARIES})
+target_link_libraries(bareosndmp PUBLIC RPC::RPC)
 
 install(TARGETS bareosndmp DESTINATION ${libdir})
 

@@ -177,7 +177,6 @@ endif()
 
 include(BareosFindLibrary)
 
-bareosfindlibrary("tirpc")
 bareosfindlibrary("util")
 bareosfindlibrary("dl")
 bareosfindlibrary("acl")
