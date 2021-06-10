@@ -1,0 +1,2 @@
+/home/arogge/workspace/bareos/test/CMakeFiles/rebuild_cache.dir
+/home/arogge/workspace/bareos/test/CMakeFiles/edit_cache.dir
