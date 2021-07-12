@@ -1,7 +1,7 @@
 /*
    BAREOS® - Backup Archiving REcovery Open Sourced
 
-   Copyright (C) 2018-2020 Bareos GmbH & Co. KG
+   Copyright (C) 2018-2021 Bareos GmbH & Co. KG
 
    This program is Free Software; you can redistribute it and/or
    modify it under the terms of version three of the GNU Affero General Public
@@ -46,6 +46,7 @@ void SplitPathAndFilename(const char* fname,
                           int* pnl,
                           POOLMEM*& file,
                           int* fnl);
-int bsscanf(const char* buf, const char* fmt, ...);
+int bsscanf(const char* buf, const char* fmt, ...)
+    __attribute__((format(scanf, 2, 3)));
 
 #endif  // BAREOS_LIB_SCAN_H_

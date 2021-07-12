@@ -24,7 +24,8 @@
 
 #include <cstdio>
 
-void ConsoleOutputFormat(const char* fmt, ...);
+void ConsoleOutputFormat(const char* fmt, ...)
+    __attribute__((format(printf, 1, 2)));
 void ConsoleOutput(const char* buf);
 void EnableTeeOut();
 void DisableTeeOut();

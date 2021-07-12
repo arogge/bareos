@@ -31,9 +31,10 @@ bool bstrncmp(const char* s1, const char* s2, int n);
 bool Bstrcasecmp(const char* s1, const char* s2);
 bool bstrncasecmp(const char* s1, const char* s2, int n);
 int cstrlen(const char* str);
-int Bsnprintf(char* str, int32_t size, const char* format, ...);
+int Bsnprintf(char* str, int32_t size, const char* format, ...)
+    __attribute__((format(printf, 3, 4)));
 int Bvsnprintf(char* str, int32_t size, const char* format, va_list ap);
-int PoolSprintf(char* pool_buf, const char* fmt, ...);
+// int PoolSprintf(char* pool_buf, const char* fmt, ...);
 void CreatePidFile(char* dir, const char* progname, int port);
 int DeletePidFile(char* dir, const char* progname, int port);
 void drop(char* uid, char* gid, bool keep_readall_caps);

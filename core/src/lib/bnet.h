@@ -27,7 +27,8 @@ template <typename T> class dlist;
 
 int32_t BnetRecv(BareosSocket* bsock);
 bool BnetSend(BareosSocket* bsock);
-bool BnetFsend(BareosSocket* bs, const char* fmt, ...);
+bool BnetFsend(BareosSocket* bs, const char* fmt, ...)
+    __attribute__((format(printf, 2, 3)));
 bool BnetSetBufferSize(BareosSocket* bs, uint32_t size, int rw);
 bool BnetSig(BareosSocket* bs, int sig);
 bool BnetTlsServer(BareosSocket* bsock,

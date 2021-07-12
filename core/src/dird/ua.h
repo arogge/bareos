@@ -144,15 +144,16 @@ class UaContext {
   // Audit event methods.
   bool AuditEventWanted(bool audit_event_enabled);
   void LogAuditEventCmdline();
-  void LogAuditEventInfoMsg(const char* fmt, ...);
+  void LogAuditEventInfoMsg(const char* fmt, ...)
+      __attribute__((format(printf, 1, 2)));
 
   // The below are in ua_output.c
   void SendRawMsg(const char* msg);
-  void SendMsg(const char* fmt, ...);
-  void ErrorMsg(const char* fmt, ...);
-  void WarningMsg(const char* fmt, ...);
-  void InfoMsg(const char* fmt, ...);
-  void SendCmdUsage(const char* fmt, ...);
+  void SendMsg(const char* fmt, ...) __attribute__((format(printf, 1, 2)));
+  void ErrorMsg(const char* fmt, ...) __attribute__((format(printf, 1, 2)));
+  void WarningMsg(const char* fmt, ...) __attribute__((format(printf, 1, 2)));
+  void InfoMsg(const char* fmt, ...) __attribute__((format(printf, 1, 2)));
+  void SendCmdUsage(const char* fmt, ...) __attribute__((format(printf, 1, 2)));
 };
 
 // Context for InsertTreeHandler()

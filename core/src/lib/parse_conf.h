@@ -405,7 +405,8 @@ class ConfigurationParser {
   void SetResourceDefaultsParserPass2(ResourceItem* item);
 };
 
-bool PrintMessage(void* sock, const char* fmt, ...);
+bool PrintMessage(void* sock, const char* fmt, ...)
+    __attribute__((format(printf, 2, 3)));
 bool IsTlsConfigured(TlsResource* tls_resource);
 
 const char* GetName(ResourceItem& item, s_kw* keywords);

@@ -173,7 +173,7 @@ class OutputFormatter {
   void SetCompact(bool value) { compact = value; }
   bool GetCompact() { return compact; }
 
-  void Decoration(const char* fmt, ...);
+  void Decoration(const char* fmt, ...) __attribute__((format(printf, 1, 2)));
 
   void ArrayStart(const char* name, const char* fmt = NULL);
   void ArrayEnd(const char* name, const char* fmt = NULL);
