@@ -345,7 +345,7 @@ static char* get_first_keyword()
  */
 static char* get_previous_keyword(int current_point, int nb)
 {
-  int i, end = -1, start, inquotes = 0;
+  int i, end = -1, start = 0, inquotes = 0;
   char* s = NULL;
 
   while (nb-- >= 0) {
