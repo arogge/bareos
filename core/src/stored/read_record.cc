@@ -476,16 +476,6 @@ bool ReadRecords(DeviceControlRecord* dcr,
          */
         rec = (dcr->after_rec) ? dcr->after_rec : dcr->before_rec;
         ok = RecordCb(dcr, rec);
-
-        /*
-         * We can just release the translated record here as the record may not
-         * be changed by the record callback so any changes made don't need to
-         * be copied back to the original DeviceRecord.
-         */
-        if (dcr->after_rec) {
-          FreeRecord(dcr->after_rec);
-          dcr->after_rec = NULL;
-        }
       }
     }
     Dmsg2(debuglevel, "After end recs in block. pos=%u:%u\n", dcr->dev->file,
