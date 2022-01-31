@@ -348,7 +348,7 @@ static inline bool bndmp_read_data_from_block(JobControlRecord* jcr,
 
   if (!rctx) { return false; }
 
-  while (!done) {
+  while (ok && !done) {
     // See if there are any records left to process.
     if (!IsBlockEmpty(rctx->rec)) {
       if (!ReadNextRecordFromBlock(dcr, rctx, &done)) {
@@ -436,7 +436,7 @@ static inline bool bndmp_read_data_from_block(JobControlRecord* jcr,
 
   if (done) { *data_length = 0; }
 
-  return true;
+  return ok;
 }
 
 // Generate virtual file attributes for the whole NDMP stream.
