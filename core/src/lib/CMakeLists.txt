@@ -88,6 +88,7 @@ set(BAREOS_SRCS
     serial.cc
     signal.cc
     status_packet.cc
+    streams.cc
     thread_list.cc
     thread_specific_data.cc
     timer_thread.cc

@@ -18,6 +18,8 @@
    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
    02110-1301, USA.
 */
+#ifndef BAREOS_LIB_PARSE_SIZE_MATCH_H_
+#define BAREOS_LIB_PARSE_SIZE_MATCH_H_
 
 #include <stdint.h>
 
@@ -38,3 +40,5 @@ struct s_sz_matching {
 
 bool ParseSizeMatch(const char* size_match_pattern,
                     struct s_sz_matching* size_matching);
+
+#endif  // BAREOS_LIB_PARSE_SIZE_MATCH_H_

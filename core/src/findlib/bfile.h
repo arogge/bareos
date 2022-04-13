@@ -3,7 +3,7 @@
 
    Copyright (C) 2003-2010 Free Software Foundation Europe e.V.
    Copyright (C) 2011-2012 Planets Communications B.V.
-   Copyright (C) 2013-2021 Bareos GmbH & Co. KG
+   Copyright (C) 2013-2022 Bareos GmbH & Co. KG
 
    This program is Free Software; you can redistribute it and/or
    modify it under the terms of version three of the GNU Affero General Public
@@ -131,7 +131,6 @@ bool SetCmdPlugin(BareosWinFilePacket* bfd, JobControlRecord* jcr);
 bool have_win32_api();
 bool IsPortableBackup(BareosWinFilePacket* bfd);
 bool IsRestoreStreamSupported(int stream);
-bool is_win32_stream(int stream);
 int bopen(BareosWinFilePacket* bfd,
           const char* fname,
           int flags,
@@ -145,7 +144,6 @@ int bclose(BareosWinFilePacket* bfd);
 ssize_t bread(BareosWinFilePacket* bfd, void* buf, size_t count);
 ssize_t bwrite(BareosWinFilePacket* bfd, void* buf, size_t count);
 boffset_t blseek(BareosWinFilePacket* bfd, boffset_t offset, int whence);
-const char* stream_to_ascii(int stream);
 
 bool processWin32BackupAPIBlock(BareosWinFilePacket* bfd,
                                 void* pBuffer,
