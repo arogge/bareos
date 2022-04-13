@@ -1,7 +1,7 @@
 /*
    BAREOS® - Backup Archiving REcovery Open Sourced
 
-   Copyright (C) 2018-2020 Bareos GmbH & Co. KG
+   Copyright (C) 2018-2022 Bareos GmbH & Co. KG
 
    This program is Free Software; you can redistribute it and/or
    modify it under the terms of version three of the GNU Affero General Public
@@ -21,7 +21,10 @@
 #ifndef BAREOS_LIB_EDIT_H_
 #define BAREOS_LIB_EDIT_H_
 
+#include <include/bc_types.h>
+
 #include <vector>
+#include <string>
 
 uint64_t str_to_uint64(const char* str);
 #define str_to_uint16(str) ((uint16_t)str_to_uint64(str))

@@ -80,21 +80,6 @@ typedef enum
   check_shadow_global_remove
 } b_fileset_shadow_type;
 
-typedef enum
-{
-  size_match_none,
-  size_match_approx,
-  size_match_smaller,
-  size_match_greater,
-  size_match_range
-} b_sz_match_type;
-
-struct s_sz_matching {
-  b_sz_match_type type{size_match_none};
-  uint64_t begin_size{};
-  uint64_t end_size{};
-};
-
 struct s_included_file {
   struct s_included_file* next;
   char options[FOPTS_BYTES]; /**< Backup options */

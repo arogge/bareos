@@ -127,6 +127,7 @@ set(BAREOSCFG_SRCS
     parse_conf.cc
     parse_conf_init_resource.cc
     parse_conf_state_machine.cc
+    parse_size_match.cc
     res.cc
     qualified_resource_name_type_converter.cc
 )

@@ -38,6 +38,7 @@
 #include "findlib/fstype.h"
 #include "findlib/drivetype.h"
 #include "lib/berrno.h"
+#include "lib/parse_size_match.h"
 
 #ifdef HAVE_DARWIN_OS
 #  include <sys/param.h>

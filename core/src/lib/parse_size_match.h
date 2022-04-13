@@ -1,7 +1,7 @@
 /*
    BAREOS® - Backup Archiving REcovery Open Sourced
 
-   Copyright (C) 2018-2022 Bareos GmbH & Co. KG
+   Copyright (C) 2022-2022 Bareos GmbH & Co. KG
 
    This program is Free Software; you can redistribute it and/or
    modify it under the terms of version three of the GNU Affero General Public
@@ -18,19 +18,23 @@
    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
    02110-1301, USA.
 */
-#ifndef BAREOS_FINDLIB_MATCH_H_
-#define BAREOS_FINDLIB_MATCH_H_
 
-struct FindFilesPacket;
+#include <stdint.h>
 
-void InitIncludeExcludeFiles(FindFilesPacket* ff);
-void TermIncludeExcludeFiles(FindFilesPacket* ff);
-void AddFnameToIncludeList(FindFilesPacket* ff,
-                           int prefixed,
-                           const char* fname);
-void AddFnameToExcludeList(FindFilesPacket* ff, const char* fname);
-bool FileIsExcluded(FindFilesPacket* ff, const char* file);
-bool FileIsIncluded(FindFilesPacket* ff, const char* file);
-struct s_included_file* get_next_included_file(FindFilesPacket* ff,
-                                               struct s_included_file* inc);
-#endif  // BAREOS_FINDLIB_MATCH_H_
+typedef enum
+{
+  size_match_none,
+  size_match_approx,
+  size_match_smaller,
+  size_match_greater,
+  size_match_range
+} b_sz_match_type;
+
+struct s_sz_matching {
+  b_sz_match_type type{size_match_none};
+  uint64_t begin_size{};
+  uint64_t end_size{};
+};
+
+bool ParseSizeMatch(const char* size_match_pattern,
+                    struct s_sz_matching* size_matching);

@@ -3,7 +3,7 @@
 
    Copyright (C) 2000-2008 Free Software Foundation Europe e.V.
    Copyright (C) 2011-2012 Planets Communications B.V.
-   Copyright (C) 2013-2019 Bareos GmbH & Co. KG
+   Copyright (C) 2013-2022 Bareos GmbH & Co. KG
 
    This program is Free Software; you can redistribute it and/or
    modify it under the terms of version three of the GNU Affero General Public
@@ -44,6 +44,7 @@
 #include "findlib/match.h"
 #include "findlib/find_one.h"
 #include "lib/edit.h"
+#include "lib/parse_size_match.h"
 
 #ifndef FNM_LEADING_DIR
 #  define FNM_LEADING_DIR 0
@@ -538,63 +539,4 @@ bool FileIsExcluded(FindFilesPacket* ff, const char* file)
     }
   }
   return false;
-}
-
-// Parse a size matching fileset option.
-bool ParseSizeMatch(const char* size_match_pattern,
-                    struct s_sz_matching* size_matching)
-{
-  bool retval = false;
-  char *private_copy, *bp;
-
-  /*
-   * Make a private copy of the input string.
-   * As we manipulate the input and size_to_uint64
-   * eats its input.
-   */
-  private_copy = strdup(size_match_pattern);
-
-  // Empty the matching arguments.
-  *size_matching = s_sz_matching{};
-
-  /*
-   * See if the size is a range e.g. there is a - in the
-   * match pattern. As a size of a file can never be negative
-   * this is a workable solution.
-   */
-  if ((bp = strchr(private_copy, '-')) != NULL) {
-    *bp++ = '\0';
-    size_matching->type = size_match_range;
-    if (!size_to_uint64(private_copy, &size_matching->begin_size)) {
-      goto bail_out;
-    }
-    if (!size_to_uint64(bp, &size_matching->end_size)) { goto bail_out; }
-  } else {
-    switch (*private_copy) {
-      case '<':
-        size_matching->type = size_match_smaller;
-        if (!size_to_uint64(private_copy + 1, &size_matching->begin_size)) {
-          goto bail_out;
-        }
-        break;
-      case '>':
-        size_matching->type = size_match_greater;
-        if (!size_to_uint64(private_copy + 1, &size_matching->begin_size)) {
-          goto bail_out;
-        }
-        break;
-      default:
-        size_matching->type = size_match_approx;
-        if (!size_to_uint64(private_copy, &size_matching->begin_size)) {
-          goto bail_out;
-        }
-        break;
-    }
-  }
-
-  retval = true;
-
-bail_out:
-  free(private_copy);
-  return retval;
 }
