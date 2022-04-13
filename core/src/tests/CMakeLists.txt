@@ -386,6 +386,12 @@ endif() # NOT HAVE_WIN32 AND NOT client-only
 
 if(NOT client-only)
   bareos_add_test(sort_stringvector LINK_LIBRARIES bareos GTest::gtest_main)
+  bareos_add_test(
+    test_consolidate
+    ADDITIONAL_SOURCES
+    LINK_LIBRARIES bareos GTest::gtest_main dird_objects bareossql bareoscats
+                   Threads::Threads
+  )
 endif() # NOT client-only
 
 if(NOT client-only)
@@ -466,13 +472,15 @@ if(NOT client-only)
 endif() # NOT client-only
 
 if(NOT client-only)
-  bareos_add_test(select_functions LINK_LIBRARIES dird_objects bareosfind bareossql GTest::gtest_main)
+  bareos_add_test(
+    select_functions LINK_LIBRARIES dird_objects bareosfind bareossql
+                                    GTest::gtest_main
+  )
 endif() # NOT client-only
 
 if(NOT client-only)
   bareos_add_test(
-    dir_fd_connection
-    LINK_LIBRARIES testing_common dird_objects bareos bareossql bareosfind
-                   GTest::gtest_main
+    dir_fd_connection LINK_LIBRARIES testing_common dird_objects bareos
+                                     bareossql bareosfind GTest::gtest_main
   )
 endif() # NOT client-only
