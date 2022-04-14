@@ -1707,7 +1707,9 @@ struct CountContext {
   }
 };
 
-static int CountingHandler(void* counting_ctx, int num_fields, char** rows)
+static int CountingHandler(void* counting_ctx,
+                           int num_fields,
+                           const char** rows)
 {
   auto* c = static_cast<struct CountContext*>(counting_ctx);
   c->count++;

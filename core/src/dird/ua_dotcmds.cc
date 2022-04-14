@@ -3,7 +3,7 @@
 
    Copyright (C) 2002-2011 Free Software Foundation Europe e.V.
    Copyright (C) 2011-2016 Planets Communications B.V.
-   Copyright (C) 2013-2021 Bareos GmbH & Co. KG
+   Copyright (C) 2013-2022 Bareos GmbH & Co. KG
 
    This program is Free Software; you can redistribute it and/or
    modify it under the terms of version three of the GNU Affero General Public
@@ -146,7 +146,7 @@ bool DotBvfsClearCacheCmd(UaContext* ua, const char* cmd)
   return true;
 }
 
-static int BvfsStat(UaContext* ua, char* lstat, int32_t* LinkFI)
+static int BvfsStat(UaContext* ua, const char* lstat, int32_t* LinkFI)
 {
   struct stat statp;
   char en1[30], en2[30];
@@ -175,15 +175,36 @@ static int BvfsStat(UaContext* ua, char* lstat, int32_t* LinkFI)
   return 0;
 }
 
-static int BvfsResultHandler(void* ctx, int fields, char** row)
+/* Return the basename of the path with the trailing /
+ * TODO: see in the rest of bareos if we don't have
+ * this function already (e.g. last_path_separator)
+ */
+static const char* bvfs_basename_dir(const char* path)
+{
+  const char* p = path;
+  int len = strlen(path) - 1;
+
+  if (path[len] == '/') { /* if directory, skip last / */
+    len -= 1;
+  }
+
+  if (len > 0) {
+    p += len;
+    while (p > path && !IsPathSeparator(*p)) { p--; }
+    if (*p == '/') { p++; /* skip first / */ }
+  }
+  return p;
+}
+
+static int BvfsResultHandler(void* ctx, int fields, const char** row)
 {
   UaContext* ua = (UaContext*)ctx;
-  char* fileid = row[BVFS_FileId];
-  char* lstat = row[BVFS_LStat];
-  char* jobid = row[BVFS_JobId];
+  const char* fileid = row[BVFS_FileId];
+  const char* lstat = row[BVFS_LStat];
+  const char* jobid = row[BVFS_JobId];
 
-  char empty[] = "A A A A A A A A A A A A A A";
-  char zero[] = "0";
+  const char empty[] = "A A A A A A A A A A A A A A";
+  const char zero[] = "0";
   int32_t LinkFI = 0;
 
   // We need to deal with non existant path
@@ -195,7 +216,7 @@ static int BvfsResultHandler(void* ctx, int fields, char** row)
 
   Dmsg1(100, "type=%s\n", row[0]);
   if (BvfsIsDir(row)) {
-    char* path = bvfs_basename_dir(row[BVFS_Name]);
+    const char* path = bvfs_basename_dir(row[BVFS_Name]);
 
     ua->send->ObjectStart();
     ua->send->ObjectKeyValue("Type", row[BVFS_Type]);
@@ -1211,7 +1232,7 @@ bool DotApiCmd(UaContext* ua, const char* cmd)
   return true;
 }
 
-static int SqlHandler(void* ctx, int num_field, char** row)
+static int SqlHandler(void* ctx, int num_field, const char** row)
 {
   UaContext* ua = (UaContext*)ctx;
   PoolMem rows(PM_MESSAGE);
@@ -1269,7 +1290,7 @@ bool DotSqlCmd(UaContext* ua, const char* cmd)
   return retval;
 }
 
-static int OneHandler(void* ctx, int num_field, char** row)
+static int OneHandler(void* ctx, int num_field, const char** row)
 {
   UaContext* ua = (UaContext*)ctx;
 

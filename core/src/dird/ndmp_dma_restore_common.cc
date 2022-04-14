@@ -127,15 +127,17 @@ void AddToNamelist(struct ndm_job_param* job,
  * Database handler that handles the returned environment data for a given
  * JobId.
  */
-int NdmpEnvHandler(void* ctx, int num_fields, char** row)
+int NdmpEnvHandler(void* ctx, int num_fields, const char** row)
 {
   struct ndm_env_table* envtab;
   ndmp9_pval pv;
 
   if (row[0] && row[1]) {
     envtab = (struct ndm_env_table*)ctx;
-    pv.name = row[0];
-    pv.value = row[1];
+    // we know that NDMP will not touch these values, the RPC specification just
+    // lacks the "const", so we have to cast it away here
+    pv.name = const_cast<char*>(row[0]);
+    pv.value = const_cast<char*>(row[1]);
 
     ndma_store_env_list(envtab, &pv);
   }

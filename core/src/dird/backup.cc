@@ -200,7 +200,7 @@ static bool GetBaseJobids(JobControlRecord* jcr, db_list_ctx* jobids)
  *      row[0]=Path, row[1]=Filename, row[2]=FileIndex
  *      row[3]=JobId row[4]=LStat row[5]=DeltaSeq row[6]=MD5
  */
-static int AccurateListHandler(void* ctx, int num_fields, char** row)
+static int AccurateListHandler(void* ctx, int num_fields, const char** row)
 {
   JobControlRecord* jcr = (JobControlRecord*)ctx;
 

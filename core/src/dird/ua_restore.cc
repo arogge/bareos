@@ -3,7 +3,7 @@
 
    Copyright (C) 2002-2011 Free Software Foundation Europe e.V.
    Copyright (C) 2011-2016 Planets Communications B.V.
-   Copyright (C) 2013-2021 Bareos GmbH & Co. KG
+   Copyright (C) 2013-2022 Bareos GmbH & Co. KG
 
    This program is Free Software; you can redistribute it and/or
    modify it under the terms of version three of the GNU Affero General Public
@@ -59,10 +59,10 @@ extern void PrintBsr(UaContext* ua, RestoreBootstrapRecord* bsr);
 
 
 /* Forward referenced functions */
-static int LastFullHandler(void* ctx, int num_fields, char** row);
-static int JobidHandler(void* ctx, int num_fields, char** row);
+static int LastFullHandler(void* ctx, int num_fields, const char** row);
+static int JobidHandler(void* ctx, int num_fields, const char** row);
 static int UserSelectJobidsOrFiles(UaContext* ua, RestoreContext* rx);
-static int FilesetHandler(void* ctx, int num_fields, char** row);
+static int FilesetHandler(void* ctx, int num_fields, const char** row);
 static void FreeNameList(NameList* name_list);
 static bool SelectBackupsBeforeDate(UaContext* ua,
                                     RestoreContext* rx,
@@ -72,7 +72,7 @@ static void free_rx(RestoreContext* rx);
 static void SplitPathAndFilename(UaContext* ua,
                                  RestoreContext* rx,
                                  char* fname);
-static int JobidFileindexHandler(void* ctx, int num_fields, char** row);
+static int JobidFileindexHandler(void* ctx, int num_fields, const char** row);
 static bool InsertFileIntoFindexList(UaContext* ua,
                                      RestoreContext* rx,
                                      char* file,
@@ -88,7 +88,7 @@ static void InsertOneFileOrDir(UaContext* ua,
 static bool GetClientName(UaContext* ua, RestoreContext* rx);
 static bool GetRestoreClientName(UaContext* ua, RestoreContext& rx);
 static bool get_date(UaContext* ua, char* date, int date_len);
-static int RestoreCountHandler(void* ctx, int num_fields, char** row);
+static int RestoreCountHandler(void* ctx, int num_fields, const char** row);
 static bool InsertTableIntoFindexList(UaContext* ua,
                                       RestoreContext* rx,
                                       char* table);
@@ -1441,7 +1441,7 @@ bail_out:
   return ok;
 }
 
-static int RestoreCountHandler(void* ctx, int num_fields, char** row)
+static int RestoreCountHandler(void* ctx, int num_fields, const char** row)
 {
   RestoreContext* rx = (RestoreContext*)ctx;
   rx->JobId = str_to_int64(row[0]);
@@ -1453,7 +1453,7 @@ static int RestoreCountHandler(void* ctx, int num_fields, char** row)
  * Callback handler to get JobId and FileIndex for files
  *   can insert more than one depending on the caller.
  */
-static int JobidFileindexHandler(void* ctx, int num_fields, char** row)
+static int JobidFileindexHandler(void* ctx, int num_fields, const char** row)
 {
   RestoreContext* rx = (RestoreContext*)ctx;
 
@@ -1469,7 +1469,7 @@ static int JobidFileindexHandler(void* ctx, int num_fields, char** row)
 }
 
 // Callback handler make list of JobIds
-static int JobidHandler(void* ctx, int num_fields, char** row)
+static int JobidHandler(void* ctx, int num_fields, const char** row)
 {
   RestoreContext* rx = (RestoreContext*)ctx;
 
@@ -1481,7 +1481,7 @@ static int JobidHandler(void* ctx, int num_fields, char** row)
 }
 
 // Callback handler to pickup last Full backup JobTDate
-static int LastFullHandler(void* ctx, int num_fields, char** row)
+static int LastFullHandler(void* ctx, int num_fields, const char** row)
 {
   RestoreContext* rx = (RestoreContext*)ctx;
 
@@ -1490,7 +1490,7 @@ static int LastFullHandler(void* ctx, int num_fields, char** row)
 }
 
 // Callback handler build FileSet name prompt list
-static int FilesetHandler(void* ctx, int num_fields, char** row)
+static int FilesetHandler(void* ctx, int num_fields, const char** row)
 {
   /* row[0] = FileSet (name) */
   if (row[0]) { AddPrompt((UaContext*)ctx, row[0]); }

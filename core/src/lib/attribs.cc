@@ -2,7 +2,7 @@
    BAREOS® - Backup Archiving REcovery Open Sourced
 
    Copyright (C) 2002-2011 Free Software Foundation Europe e.V.
-   Copyright (C) 2016-2018 Bareos GmbH & Co. KG
+   Copyright (C) 2016-2022 Bareos GmbH & Co. KG
 
    This program is Free Software; you can redistribute it and/or
    modify it under the terms of version three of the GNU Affero General Public
@@ -117,18 +117,17 @@ void EncodeStat(char* buf,
 #    define plug(st, val) st = val
 #  else
 /* Use templates to do the casting */
-template <class T>
-void plug(T& st, uint64_t val)
-{
-  st = static_cast<T>(val);
-}
+template <class T> void plug(T& st, uint64_t val) { st = static_cast<T>(val); }
 #  endif
 #endif
 
 // Decode a stat packet from base64 characters
-int DecodeStat(char* buf, struct stat* statp, int stat_size, int32_t* LinkFI)
+int DecodeStat(const char* buf,
+               struct stat* statp,
+               int stat_size,
+               int32_t* LinkFI)
 {
-  char* p = buf;
+  const char* p = buf;
   int64_t val;
 
   /*

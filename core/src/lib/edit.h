@@ -34,7 +34,7 @@ int64_t str_to_int64(const char* str);
 #define str_to_int32(str) ((int32_t)str_to_int64(str))
 char* edit_uint64_with_commas(uint64_t val, char* buf);
 char* edit_uint64_with_suffix(uint64_t val, char* buf);
-char* add_commas(char* val, char* buf);
+char* add_commas(const char* val, char* buf);
 char* edit_uint64(uint64_t val, char* buf);
 char* edit_int64(int64_t val, char* buf);
 char* edit_int64_with_commas(int64_t val, char* buf);

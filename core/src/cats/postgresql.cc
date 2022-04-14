@@ -387,7 +387,7 @@ void BareosDbPostgresql::FreeEscapedObjectMemory(unsigned char* obj)
  *
  */
 void BareosDbPostgresql::UnescapeObject(JobControlRecord* jcr,
-                                        char* from,
+                                        const char* from,
                                         int32_t expected_len,
                                         POOLMEM*& dest,
                                         int32_t* dest_len)

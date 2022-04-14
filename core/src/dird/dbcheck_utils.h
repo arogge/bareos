@@ -1,7 +1,7 @@
 /*
    BAREOS® - Backup Archiving REcovery Open Sourced
 
-   Copyright (C) 2021-2021 Bareos GmbH & Co. KG
+   Copyright (C) 2021-2022 Bareos GmbH & Co. KG
 
    This program is Free Software; you can redistribute it and/or
    modify it under the terms of version three of the GNU Affero General Public
@@ -56,16 +56,16 @@ typedef struct s_name_ctx {
 #define MAX_ID_LIST_LEN 10000000
 
 // Helper functions
-int PrintNameHandler(void* ctx, int num_fields, char** row);
-int GetNameHandler(void* ctx, int num_fields, char** row);
-int PrintJobHandler(void* ctx, int num_fields, char** row);
-int PrintJobmediaHandler(void* ctx, int num_fields, char** row);
-int PrintFileHandler(void* ctx, int num_fields, char** row);
-int PrintFilesetHandler(void* ctx, int num_fields, char** row);
-int PrintClientHandler(void* ctx, int num_fields, char** row);
-int IdListHandler(void* ctx, int num_fields, char** row);
+int PrintNameHandler(void* ctx, int num_fields, const char** row);
+int GetNameHandler(void* ctx, int num_fields, const char** row);
+int PrintJobHandler(void* ctx, int num_fields, const char** row);
+int PrintJobmediaHandler(void* ctx, int num_fields, const char** row);
+int PrintFileHandler(void* ctx, int num_fields, const char** row);
+int PrintFilesetHandler(void* ctx, int num_fields, const char** row);
+int PrintClientHandler(void* ctx, int num_fields, const char** row);
+int IdListHandler(void* ctx, int num_fields, const char** row);
 int MakeIdList(BareosDb* db, const char* query, ID_LIST* id_list);
-int NameListHandler(void* ctx, int num_fields, char** row);
+int NameListHandler(void* ctx, int num_fields, const char** row);
 int MakeNameList(BareosDb* db, const char* query, s_name_ctx* name_list);
 void PrintNameList(s_name_ctx* name_list);
 void FreeNameList(s_name_ctx* name_list);

@@ -34,9 +34,9 @@ bool PruneJobs(UaContext* ua,
                PoolResource* pool,
                std::vector<char> JobTypes);
 bool PruneVolume(UaContext* ua, MediaDbRecord* mr);
-int JobDeleteHandler(void* ctx, int num_fields, char** row);
-int DelCountHandler(void* ctx, int num_fields, char** row);
-int FileDeleteHandler(void* ctx, int num_fields, char** row);
+int JobDeleteHandler(void* ctx, int num_fields, const char** row);
+int DelCountHandler(void* ctx, int num_fields, const char** row);
+int FileDeleteHandler(void* ctx, int num_fields, const char** row);
 int GetPruneListForVolume(UaContext* ua, MediaDbRecord* mr, del_ctx* del);
 int ExcludeRunningJobsFromList(del_ctx* prune_list);
 

@@ -2,7 +2,7 @@
    BAREOS® - Backup Archiving REcovery Open Sourced
 
    Copyright (C) 2000-2007 Free Software Foundation Europe e.V.
-   Copyright (C) 2016-2019 Bareos GmbH & Co. KG
+   Copyright (C) 2016-2022 Bareos GmbH & Co. KG
 
    This program is Free Software; you can redistribute it and/or
    modify it under the terms of version three of the GNU Affero General Public
@@ -90,7 +90,7 @@ int ToBase64(int64_t value, char* where)
  *
  * Returns the value.
  */
-int FromBase64(int64_t* value, char* where)
+int FromBase64(int64_t* value, const char* where)
 {
   uint64_t val = 0;
   int i, neg;
@@ -170,7 +170,7 @@ int BinToBase64(char* buf, int buflen, char* bin, int binlen, bool compatible)
  *  Returns: the number of characters stored not
  *           including the EOS
  */
-int Base64ToBin(char* dest, int dest_size, char* src, int srclen)
+int Base64ToBin(char* dest, int dest_size, const char* src, int srclen)
 {
   int nprbytes;
   uint8_t* bufout;

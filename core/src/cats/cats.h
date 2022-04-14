@@ -463,7 +463,7 @@ typedef enum
 } SQL_DBTYPE;
 
 typedef void(DB_LIST_HANDLER)(void*, const char*);
-typedef int(DB_RESULT_HANDLER)(void*, int, char**);
+typedef int(DB_RESULT_HANDLER)(void*, int, const char**);
 
 #define DbLock(mdb) mdb->LockDb(__FILE__, __LINE__)
 #define DbUnlock(mdb) mdb->UnlockDb(__FILE__, __LINE__)
@@ -478,7 +478,7 @@ class pathid_cache;
 #define BDB_VERSION 2210
 
 #ifdef _BDB_PRIV_INTERFACE_
-typedef char** SQL_ROW;
+typedef const char** SQL_ROW;
 
 typedef struct sql_field {
   char* name = nullptr; /* name of column */
@@ -608,7 +608,7 @@ class BareosDb : public BareosDbQueryEnum {
   int GetSqlRecordMax(JobControlRecord* jcr);
   void SplitPathAndFile(JobControlRecord* jcr, const char* fname);
   void ListDashes(OutputFormatter* send);
-  int ListResult(void* vctx, int nb_col, char** row);
+  int ListResult(void* vctx, int nb_col, const char** row);
   int ListResult(JobControlRecord* jcr,
                  OutputFormatter* send,
                  e_list_type type);
@@ -946,7 +946,7 @@ class BareosDb : public BareosDbQueryEnum {
   virtual void FreeEscapedObjectMemory(unsigned char* obj) {}
 
   virtual void UnescapeObject(JobControlRecord* jcr,
-                              char* from,
+                              const char* from,
                               int32_t expected_len,
                               POOLMEM*& dest,
                               int32_t* len);
@@ -1098,7 +1098,7 @@ class ListContext {
 };
 
 // Some functions exported by sql.c for use within the cats directory.
-int ListResult(void* vctx, int cols, char** row);
+int ListResult(void* vctx, int cols, const char** row);
 int ListResult(JobControlRecord* jcr,
                BareosDb* mdb,
                OutputFormatter* send,

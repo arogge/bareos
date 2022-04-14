@@ -426,7 +426,7 @@ static inline int GetNextDbidFromList(const char** p, DBId_t* DBId)
 }
 
 // Add an item to the list if it is unique
-static void AddUniqueId(idpkt* ids, char* item)
+static void AddUniqueId(idpkt* ids, const char* item)
 {
   const int maxlen = 30;
   char id[maxlen + 1];
@@ -462,7 +462,7 @@ static void AddUniqueId(idpkt* ids, char* item)
 }
 
 // Callback handler make list of DB Ids
-static int UniqueDbidHandler(void* ctx, int num_fields, char** row)
+static int UniqueDbidHandler(void* ctx, int num_fields, const char** row)
 {
   idpkt* ids = (idpkt*)ctx;
 
@@ -491,7 +491,7 @@ static int ItemCompare(uitem* item1, uitem* item2)
   return strcmp(i1->item, i2->item);
 }
 
-static int UniqueNameHandler(void* ctx, int num_fields, char** row)
+static int UniqueNameHandler(void* ctx, int num_fields, const char** row)
 {
   dlist<uitem>* list = (dlist<uitem>*)ctx;
 

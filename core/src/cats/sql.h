@@ -20,15 +20,16 @@
 */
 #ifndef BAREOS_CATS_SQL_H_
 #define BAREOS_CATS_SQL_H_
-int db_int64_handler(void* ctx, int num_fields, char** row);
-int DbStrtimeHandler(void* ctx, int num_fields, char** row);
-int DbListHandler(void* ctx, int num_fields, char** row);
+int db_int64_handler(void* ctx, int num_fields, const char** row);
+int DbStrtimeHandler(void* ctx, int num_fields, const char** row);
+int DbListHandler(void* ctx, int num_fields, const char** row);
 void DbDebugPrint(JobControlRecord* jcr, FILE* fp);
-int DbIntHandler(void* ctx, int num_fields, char** row);
+int DbIntHandler(void* ctx, int num_fields, const char** row);
 
 // This template allows you to easily use an object with operator() or a lambda
 //      SqlQuery(query, ObjectHandler<decltype(obj)>, &obj)
-template <typename T> int ObjectHandler(void* ctx, int num_fields, char** row)
+template <typename T>
+int ObjectHandler(void* ctx, int num_fields, const char** row)
 {
   return static_cast<T*>(ctx)->operator()(num_fields, row) ? 0 : 1;
 }

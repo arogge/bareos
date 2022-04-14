@@ -48,7 +48,7 @@ class pathid_cache {
 };
 
 // Generic path handlers used for database queries.
-static int GetPathHandler(void* ctx, int fields, char** row)
+static int GetPathHandler(void* ctx, int fields, const char** row)
 {
   PoolMem* buf = (PoolMem*)ctx;
 
@@ -57,7 +57,7 @@ static int GetPathHandler(void* ctx, int fields, char** row)
   return 0;
 }
 
-static int PathHandler(void* ctx, int fields, char** row)
+static int PathHandler(void* ctx, int fields, const char** row)
 {
   Bvfs* fs = (Bvfs*)ctx;
 
@@ -355,7 +355,7 @@ int BareosDb::BvfsBuildLsFileQuery(PoolMem& query,
   return nb_record;
 }
 
-static int ResultHandler(void* ctx, int fields, char** row)
+static int ResultHandler(void* ctx, int fields, const char** row)
 {
   Dmsg1(100, "ResultHandler(*,%d,**)", fields);
   if (fields == 4) {
@@ -461,28 +461,6 @@ char* bvfs_parent_dir(char* path)
   return path;
 }
 
-/* Return the basename of the path with the trailing /
- * TODO: see in the rest of bareos if we don't have
- * this function already (e.g. last_path_separator)
- */
-char* bvfs_basename_dir(char* path)
-{
-  char* p = path;
-  int len = strlen(path) - 1;
-
-  if (path[len] == '/') { /* if directory, skip last / */
-    len -= 1;
-  }
-
-  if (len > 0) {
-    p += len;
-    while (p > path && !IsPathSeparator(*p)) { p--; }
-    if (*p == '/') { p++; /* skip first / */ }
-  }
-  return p;
-}
-
-
 void Bvfs::update_cache() { db->BvfsUpdatePathHierarchyCache(jcr, jobids); }
 
 // Change the current directory, returns true if the path exists
@@ -548,7 +526,7 @@ DBId_t Bvfs::get_root()
   return p;
 }
 
-int Bvfs::_handlePath(void* ctx, int fields, char** row)
+int Bvfs::_handlePath(void* ctx, int fields, const char** row)
 {
   if (BvfsIsDir(row)) {
     // Can have the same path 2 times

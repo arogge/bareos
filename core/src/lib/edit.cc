@@ -604,7 +604,7 @@ bool IsNameValid(const char* name)
 }
 
 // Add commas to a string, which is presumably a number.
-char* add_commas(char* val, char* buf)
+char* add_commas(const char* val, char* buf)
 {
   int len, nc;
   char *p, *q;

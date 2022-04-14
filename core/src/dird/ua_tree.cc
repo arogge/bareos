@@ -215,7 +215,7 @@ bool UserSelectFilesFromTree(TreeContext* tree)
  * row[0]=Path, row[1]=Filename, row[2]=FileIndex
  * row[3]=JobId row[4]=LStat row[5]=DeltaSeq row[6]=Fhinfo row[7]=Fhnode
  */
-int InsertTreeHandler(void* ctx, int num_fields, char** row)
+int InsertTreeHandler(void* ctx, int num_fields, const char** row)
 {
   struct stat statp;
   TreeContext* tree = (TreeContext*)ctx;
@@ -240,7 +240,11 @@ int InsertTreeHandler(void* ctx, int num_fields, char** row)
   }
   DecodeStat(row[4], &statp, sizeof(statp), &LinkFI);
   hard_link = (LinkFI != 0);
-  node = insert_tree_node(row[0], row[1], type, tree->root, NULL);
+  char* path = strdup(row[0]);
+  char* fname = strdup(row[1]);
+  node = insert_tree_node(path, fname, type, tree->root, NULL);
+  free(path);
+  free(fname);
   JobId = str_to_int64(row[3]);
   FileIndex = str_to_int64(row[2]);
   delta_seq = str_to_int64(row[5]);

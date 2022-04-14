@@ -2642,7 +2642,7 @@ bool quit_cmd(UaContext* ua, const char* cmd)
 }
 
 // Handler to get job status
-static int StatusHandler(void* ctx, int num_fields, char** row)
+static int StatusHandler(void* ctx, int num_fields, const char** row)
 {
   char* val = (char*)ctx;
 

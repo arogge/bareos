@@ -1,7 +1,7 @@
 /*
    BAREOS® - Backup Archiving REcovery Open Sourced
 
-   Copyright (C) 2021-2021 Bareos GmbH & Co. KG
+   Copyright (C) 2021-2022 Bareos GmbH & Co. KG
 
    This program is Free Software; you can redistribute it and/or
    modify it under the terms of version three of the GNU Affero General Public
@@ -108,15 +108,15 @@ void PopulateTree(int quantity, TreeContext* tree)
       strcpy(path, file_path.c_str());
       strcpy(filename, file.c_str());
 
-      char* row0 = path;
-      char* row1 = filename;
-      char row2[] = "1";
-      char row3[] = "2";
-      char row4[] = "ff";
-      char row5[] = "0";
-      char row6[] = "0";
-      char row7[] = "0";
-      char* row[] = {row0, row1, row2, row3, row4, row5, row6, row7};
+      const char* row0 = path;
+      const char* row1 = filename;
+      const char row2[] = "1";
+      const char row3[] = "2";
+      const char row4[] = "ff";
+      const char row5[] = "0";
+      const char row6[] = "0";
+      const char row7[] = "0";
+      const char* row[] = {row0, row1, row2, row3, row4, row5, row6, row7};
 
       InsertTreeHandler(tree, 0, row);
     }

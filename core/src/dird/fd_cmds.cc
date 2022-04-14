@@ -3,7 +3,7 @@
 
    Copyright (C) 2000-2010 Free Software Foundation Europe e.V.
    Copyright (C) 2011-2016 Planets Communications B.V.
-   Copyright (C) 2013-2021 Bareos GmbH & Co. KG
+   Copyright (C) 2013-2022 Bareos GmbH & Co. KG
 
    This program is Free Software; you can redistribute it and/or
    modify it under the terms of version three of the GNU Affero General Public
@@ -888,7 +888,7 @@ struct RestoreObjectContext {
 };
 
 // RestoreObjectHandler is called for each file found
-static int RestoreObjectHandler(void* ctx, int num_fields, char** row)
+static int RestoreObjectHandler(void* ctx, int num_fields, const char** row)
 {
   BareosSocket* fd;
   bool is_compressed;
@@ -913,9 +913,10 @@ static int RestoreObjectHandler(void* ctx, int num_fields, char** row)
               row[2], row[3], row[4], row[5], row[6]);
   } else {
     // bash spaces from PluginName
-    BashSpaces(row[9]);
+    std::string plugin_name{row[9]};
+    BashSpaces(plugin_name);
     fd->fsend("restoreobject JobId=%s %s,%s,%s,%s,%s,%s,%s\n", row[0], row[1],
-              row[2], row[3], row[4], row[5], row[6], row[9]);
+              row[2], row[3], row[4], row[5], row[6], plugin_name.c_str());
   }
   Dmsg1(010, "Send obj hdr=%s", fd->msg);
 

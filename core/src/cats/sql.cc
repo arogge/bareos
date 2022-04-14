@@ -3,7 +3,7 @@
 
    Copyright (C) 2000-2009 Free Software Foundation Europe e.V.
    Copyright (C) 2011-2016 Planets Communications B.V.
-   Copyright (C) 2013-2019 Bareos GmbH & Co. KG
+   Copyright (C) 2013-2022 Bareos GmbH & Co. KG
 
    This program is Free Software; you can redistribute it and/or
    modify it under the terms of version three of the GNU Affero General Public
@@ -62,7 +62,7 @@ DBId_t dbid_list::get(int i) const
 }
 
 
-int DbIntHandler(void* ctx, int num_fields, char** row)
+int DbIntHandler(void* ctx, int num_fields, const char** row)
 {
   uint32_t* val = (uint32_t*)ctx;
 
@@ -83,7 +83,7 @@ int DbIntHandler(void* ctx, int num_fields, char** row)
  * Called here to retrieve a 32/64 bit integer from the database.
  *   The returned integer will be extended to 64 bit.
  */
-int db_int64_handler(void* ctx, int num_fields, char** row)
+int db_int64_handler(void* ctx, int num_fields, const char** row)
 {
   db_int64_ctx* lctx = (db_int64_ctx*)ctx;
 
@@ -98,7 +98,7 @@ int db_int64_handler(void* ctx, int num_fields, char** row)
  * Called here to retrieve a btime from the database.
  *   The returned integer will be extended to 64 bit.
  */
-int DbStrtimeHandler(void* ctx, int num_fields, char** row)
+int DbStrtimeHandler(void* ctx, int num_fields, const char** row)
 {
   db_int64_ctx* lctx = (db_int64_ctx*)ctx;
 
@@ -110,7 +110,7 @@ int DbStrtimeHandler(void* ctx, int num_fields, char** row)
 }
 
 // Use to build a comma separated list of values from a query. "10,20,30"
-int DbListHandler(void* ctx, int num_fields, char** row)
+int DbListHandler(void* ctx, int num_fields, const char** row)
 {
   db_list_ctx* lctx = (db_list_ctx*)ctx;
   if (num_fields == 1 && row[0]) { lctx->add(row[0]); }
@@ -126,7 +126,9 @@ struct max_connections_context {
   uint32_t nr_connections;
 };
 
-static inline int DbMaxConnectionsHandler(void* ctx, int num_fields, char** row)
+static inline int DbMaxConnectionsHandler(void* ctx,
+                                          int num_fields,
+                                          const char** row)
 {
   struct max_connections_context* context;
   uint32_t index;
@@ -422,7 +424,7 @@ void BareosDb::ListDashes(OutputFormatter* send)
 }
 
 // List result handler used by queries done with db_big_sql_query()
-int BareosDb::ListResult(void* vctx, int nb_col, char** row)
+int BareosDb::ListResult(void* vctx, int nb_col, const char** row)
 {
   JobControlRecord* jcr;
   char ewc[30];
@@ -613,7 +615,7 @@ int BareosDb::ListResult(void* vctx, int nb_col, char** row)
   return 0;
 }
 
-int ListResult(void* vctx, int nb_col, char** row)
+int ListResult(void* vctx, int nb_col, const char** row)
 {
   ListContext* pctx = (ListContext*)vctx;
   BareosDb* mdb = pctx->mdb;

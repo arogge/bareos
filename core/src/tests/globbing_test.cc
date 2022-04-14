@@ -64,15 +64,16 @@ void PopulateTree(std::vector<std::string> files, TreeContext* tree)
     SplitPathAndFilename(file.c_str(), path.addr(), &pnl, filename.addr(),
                          &fnl);
 
-    char* row0 = path.c_str();
-    char* row1 = filename.c_str();
-    char row2[] = "1";
-    char row3[] = "2";
-    char row4[] = "P0A CF2xg IGk B Po Po A 3Y BAA I BhjA7I BU+HEc BhjA7I A A C";
-    char row5[] = "0";
-    char row6[] = "0";
-    char row7[] = "0";
-    char* row[] = {row0, row1, row2, row3, row4, row5, row6, row7};
+    const char* row0 = path.c_str();
+    const char* row1 = filename.c_str();
+    const char row2[] = "1";
+    const char row3[] = "2";
+    const char row4[]
+        = "P0A CF2xg IGk B Po Po A 3Y BAA I BhjA7I BU+HEc BhjA7I A A C";
+    const char row5[] = "0";
+    const char row6[] = "0";
+    const char row7[] = "0";
+    const char* row[] = {row0, row1, row2, row3, row4, row5, row6, row7};
 
     InsertTreeHandler(tree, 0, row);
   }

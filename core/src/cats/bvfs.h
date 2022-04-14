@@ -3,7 +3,7 @@
 
    Copyright (C) 2000-2009 Free Software Foundation Europe e.V.
    Copyright (C) 2016-2016 Planets Communications B.V.
-   Copyright (C) 2016-2021 Bareos GmbH & Co. KG
+   Copyright (C) 2016-2022 Bareos GmbH & Co. KG
 
    This program is Free Software; you can redistribute it and/or
    modify it under the terms of version three of the GNU Affero General Public
@@ -137,7 +137,7 @@ class Bvfs {
   bool DropRestoreList(char* output_table);
 
   /* for internal use */
-  int _handlePath(void*, int, char**);
+  int _handlePath(void*, int, const char**);
 
  private:
   Bvfs(const Bvfs&);            /* prohibit pass by value */
@@ -166,11 +166,5 @@ class Bvfs {
 #define BvfsIsVersion(row) ((row)[BVFS_Type][0] == BVFS_FILE_VERSION)
 
 char* bvfs_parent_dir(char* path);
-
-/*
- * Return the basename of the with the trailing / (update the given string)
- * TODO: see in the rest of bareos if we don't have this function already
- */
-char* bvfs_basename_dir(char* path);
 
 #endif  // BAREOS_CATS_BVFS_H_
