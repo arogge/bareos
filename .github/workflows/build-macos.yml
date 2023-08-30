@@ -69,6 +69,7 @@ jobs:
       run: |
         cmake -S . -B cmake-build -Dclient-only=yes
         cmake --build cmake-build -- package
+        find cmake-build -type f -perm +0111 -print
         ls -la cmake-build/*.pkg
         mkdir -p "${{ env.artifact_dir }}/BUILD_RESULTS/MacOS"
         mv cmake-build/*.pkg "${{ env.artifact_dir }}/BUILD_RESULTS/MacOS"
