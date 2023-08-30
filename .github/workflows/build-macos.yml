@@ -69,7 +69,7 @@ jobs:
       run: |
         cmake -S . -B cmake-build -Dclient-only=yes
         cmake --build cmake-build -- package
-        find cmake-build -type f -perm +0111 -print
+        find cmake-build/core/src -type f -perm +0111 -print -exec otool -L {} ";"
         ls -la cmake-build/*.pkg
         mkdir -p "${{ env.artifact_dir }}/BUILD_RESULTS/MacOS"
         mv cmake-build/*.pkg "${{ env.artifact_dir }}/BUILD_RESULTS/MacOS"
