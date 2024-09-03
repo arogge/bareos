@@ -1125,7 +1125,7 @@ static bacl_exit_code freebsd_parse_acl_streams(JobControlRecord* jcr,
  * functions.
  */
 static bacl_exit_code (*os_build_acl_streams)(JobControlRecord* jcr,
-                                              AclData* acl_data,
+                                              AclBuildData* acl_data,
                                               FindFilesPacket* ff_pkt)
     = freebsd_build_acl_streams;
 static bacl_exit_code (*os_parse_acl_streams)(JobControlRecord* jcr,
