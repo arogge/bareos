@@ -504,7 +504,7 @@ static bacl_exit_code aix_parse_acl_streams(JobControlRecord* jcr,
  * functions.
  */
 static bacl_exit_code (*os_build_acl_streams)(JobControlRecord* jcr,
-                                              AclData* acl_data,
+                                              AclBuildData* acl_data,
                                               FindFilesPacket* ff_pkt)
     = aix_build_acl_streams;
 static bacl_exit_code (*os_parse_acl_streams)(JobControlRecord* jcr,
@@ -911,7 +911,7 @@ static bacl_exit_code darwin_parse_acl_streams(JobControlRecord* jcr,
  * functions.
  */
 static bacl_exit_code (*os_build_acl_streams)(JobControlRecord* jcr,
-                                              AclData* acl_data,
+                                              AclBuildData* acl_data,
                                               FindFilesPacket* ff_pkt)
     = darwin_build_acl_streams;
 static bacl_exit_code (*os_parse_acl_streams)(JobControlRecord* jcr,
@@ -1612,7 +1612,7 @@ static bacl_exit_code solaris_parse_acl_streams(JobControlRecord* jcr,
  * functions.
  */
 static bacl_exit_code (*os_build_acl_streams)(JobControlRecord* jcr,
-                                              AclData* acl_data,
+                                              AclBuildData* acl_data,
                                               FindFilesPacket* ff_pkt)
     = solaris_build_acl_streams;
 static bacl_exit_code (*os_parse_acl_streams)(JobControlRecord* jcr,
