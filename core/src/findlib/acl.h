@@ -39,7 +39,7 @@
  * This value is used as ostype when we encounter an invalid acl type.
  * The way the code is build this should never happen.
  */
-static constexpr acl_type_t ACL_TYPE_NONE = 0;
+static constexpr acl_type_t ACL_TYPE_NONE = static_cast<acl_type_t>(0);
 #endif
 
 class JobControlRecord;
