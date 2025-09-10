@@ -28,6 +28,7 @@
 #include "stored/device_control_record.h"
 #include "stored/stored.h"
 #include "lib/scsi_tapealert.h"
+#include "scsitapealert-sd.h"
 
 using namespace storagedaemon;
 
@@ -37,6 +38,24 @@ using namespace storagedaemon;
 #define PLUGIN_VERSION "1"
 #define PLUGIN_DESCRIPTION "SCSI Tape Alert Storage Daemon Plugin"
 #define PLUGIN_USAGE "(No usage yet)"
+
+namespace {
+
+void dispatch_messages(const char* device, const char* volume, uint64_t flags) {
+  constexpr const char* msg = "Tapealert on device \"%s\" with volume \"%s\": [%d] %s\n%s\nPossible cause: %s\n";
+  if(strnlen(volume, 1) == 0) {
+    volume = "<none>";
+  }
+
+  for(auto& flag: scsitapealert::flags) {
+    if(flag.present_in(flags)) {
+      Emsg0(flag.type, 0, msg, device, volume, flag.no, flag.name, flag.message, flag.cause);
+      Pmsg0(-1, msg, device, volume, flag.no, flag.name, flag.message, flag.cause);
+    }
+  }
+}
+
+}
 
 // Forward referenced functions
 static bRC newPlugin(PluginContext* ctx);
@@ -66,6 +85,7 @@ static PluginFunctions pluginFuncs
        getPluginValue, setPluginValue, handlePluginEvent};
 
 static int const debuglevel = 200;
+
 
 #ifdef __cplusplus
 extern "C" {
@@ -118,8 +138,20 @@ static bRC newPlugin(PluginContext* ctx)
 
   // Only register plugin events we are interested in.
   bareos_core_functions->registerBareosEvents(
-      ctx, 6, bSdEventVolumeLoad, bSdEventLabelVerified, bSdEventReadError,
-      bSdEventWriteError, bSdEventVolumeUnload, bSdEventDeviceRelease);
+      ctx, 11,
+      bSdEventJobStart,
+      bSdEventJobEnd,
+      bSdEventDeviceInit,
+      bSdEventVolumeLoad,
+      bSdEventLabelVerified,
+      bSdEventReadError,
+      bSdEventWriteError,
+      bSdEventVolumeUnload,
+      bSdEventDeviceRelease,
+      bSdEventDeviceOpen,
+      bSdEventDeviceClose,
+      0
+      );
 
   return bRC_OK;
 }
@@ -159,6 +191,7 @@ static bRC handlePluginEvent(PluginContext*, bSdEvent* event, void* value)
     case bSdEventReadError:
     case bSdEventWriteError:
     case bSdEventVolumeUnload:
+    case bSdEventDeviceOpen:
       return handle_tapealert_readout(value);
     default:
       Dmsg1(debuglevel, "scsitapealert-sd: Unknown event %d\n",
@@ -211,6 +244,7 @@ static bRC handle_tapealert_readout(void* value)
         "scsitapealert-sd: tapealerts on device %s, calling UpdateTapeAlerts\n",
         dev->archive_device_string);
     bareos_core_functions->UpdateTapeAlert(dcr, flags);
+    dispatch_messages(device_resource->resource_name_, dev->getVolCatName(), flags);
   }
 
   return bRC_OK;
