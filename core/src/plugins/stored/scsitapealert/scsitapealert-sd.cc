@@ -187,11 +187,17 @@ static bRC setPluginValue(PluginContext*, pVariable var, void*)
 static bRC handlePluginEvent(PluginContext*, bSdEvent* event, void* value)
 {
   switch (event->eventType) {
+    case bSdEventDeviceClose:
+    case bSdEventDeviceInit:
+    case bSdEventDeviceOpen:
+    case bSdEventDeviceRelease:
+    case bSdEventJobEnd:
+    case bSdEventJobStart:
     case bSdEventLabelVerified:
     case bSdEventReadError:
-    case bSdEventWriteError:
+    case bSdEventVolumeLoad:
     case bSdEventVolumeUnload:
-    case bSdEventDeviceOpen:
+    case bSdEventWriteError:
       return handle_tapealert_readout(value);
     default:
       Dmsg1(debuglevel, "scsitapealert-sd: Unknown event %d\n",
