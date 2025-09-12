@@ -41,16 +41,16 @@ using namespace storagedaemon;
 
 namespace {
 
-void dispatch_messages(const char* device, const char* volume, uint64_t flags) {
-  constexpr const char* msg = "Tapealert on device \"%s\" with volume \"%s\": [%d] %s\n%s\nPossible cause: %s\n";
+void dispatch_messages(const char* device, const char* volume, uint32_t jobid, uint64_t flags) {
+  constexpr const char* msg = "Tapealert on device \"%s\" with volume \"%s\" from jobid %u: [%d] %s\n%s\nPossible cause: %s\n";
   if(strnlen(volume, 1) == 0) {
-    volume = "<none>";
+    volume = "<N/A>";
   }
 
   for(auto& flag: scsitapealert::flags) {
     if(flag.present_in(flags)) {
-      Emsg0(flag.type, 0, msg, device, volume, flag.no, flag.name, flag.message, flag.cause);
-      Pmsg0(-1, msg, device, volume, flag.no, flag.name, flag.message, flag.cause);
+      Emsg0(flag.type, 0, msg, device, volume, jobid, flag.no, flag.name, flag.message, flag.cause);
+      Pmsg0(-1, msg, device, volume, jobid, flag.no, flag.name, flag.message, flag.cause);
     }
   }
 }
@@ -138,8 +138,7 @@ static bRC newPlugin(PluginContext* ctx)
 
   // Only register plugin events we are interested in.
   bareos_core_functions->registerBareosEvents(
-      ctx, 11,
-      bSdEventJobStart,
+      ctx, 10,
       bSdEventJobEnd,
       bSdEventDeviceInit,
       bSdEventVolumeLoad,
@@ -192,7 +191,6 @@ static bRC handlePluginEvent(PluginContext*, bSdEvent* event, void* value)
     case bSdEventDeviceOpen:
     case bSdEventDeviceRelease:
     case bSdEventJobEnd:
-    case bSdEventJobStart:
     case bSdEventLabelVerified:
     case bSdEventReadError:
     case bSdEventVolumeLoad:
@@ -250,7 +248,9 @@ static bRC handle_tapealert_readout(void* value)
         "scsitapealert-sd: tapealerts on device %s, calling UpdateTapeAlerts\n",
         dev->archive_device_string);
     bareos_core_functions->UpdateTapeAlert(dcr, flags);
-    dispatch_messages(device_resource->resource_name_, dev->getVolCatName(), flags);
+    uint32_t jobid{0};
+    if (dcr->jcr) { jobid = dcr->jcr->JobId; }
+    dispatch_messages(device_resource->resource_name_, dev->getVolCatName(), jobid, flags);
   }
 
   return bRC_OK;
