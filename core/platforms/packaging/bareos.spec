@@ -893,8 +893,8 @@ cmake  .. \
 %if 0%{?client_only}
   -Dclient-only=yes \
 %endif
-  -DCMAKE_CXX_FLAGS="${CXXFLAGS}" \
-  -DCMAKE_C_FLAGS="${CFLAGS}" \
+  -DCMAKE_CXX_FLAGS_RELEASE="" \
+  -DCMAKE_C_FLAGS_RELEASE="" \
   -Ddir-user=%{director_daemon_user} \
   -Ddir-group=%{daemon_group} \
   -Dsd-user=%{storage_daemon_user} \
