@@ -920,6 +920,9 @@ cmake  .. \
 %endif
   -Dwebuiconfdir=%{_sysconfdir}/bareos-webui \
   -DVERSION_STRING=%version
+
+cat CMakeCache.txt
+
 %if 0%{?make_build:1}
 %make_build
 %else
