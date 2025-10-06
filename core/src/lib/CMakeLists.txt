@@ -38,7 +38,6 @@ target_sources(
           bnet_network_dump_private.cc
           bpipe.cc
           breg.cc
-          bregex.cc
           bsnprintf.cc
           bsock.cc
           bsock_tcp.cc
