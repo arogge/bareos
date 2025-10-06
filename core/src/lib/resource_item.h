@@ -37,11 +37,11 @@ template <typename T> class dlist;
 
 namespace config {
 struct DefaultValue {
-  const char* value;
+  const char* value{};
 };
 
 struct Version {
-  size_t major, minor, patch;
+  size_t major{}, minor{}, patch{};
 };
 
 struct DeprecatedSince {
@@ -53,7 +53,10 @@ struct IntroducedIn {
 };
 
 struct Code {
-  size_t value;
+  size_t value{};
+
+  Code() = delete;
+  Code(size_t val) : value{val} {}
 };
 
 struct Required {};
