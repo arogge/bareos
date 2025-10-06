@@ -18,6 +18,8 @@
 #   02110-1301, USA.
 message("Entering ${CMAKE_CURRENT_SOURCE_DIR}")
 
+message("build type is '${CMAKE_BUILD_TYPE}'")
+
 if(CMAKE_SYSTEM_NAME MATCHES "Windows")
   cmake_minimum_required(VERSION 3.25...3.31)
 else()
@@ -33,6 +35,9 @@ if(HAVE_MULTI_CONFIG)
 endif()
 
 project(bareos C CXX)
+
+message("new build type is '${CMAKE_BUILD_TYPE}'")
+
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_CXX_SCAN_FOR_MODULES OFF)
 
