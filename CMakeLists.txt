@@ -36,8 +36,6 @@ endif()
 
 project(bareos C CXX)
 
-message("new build type is '${CMAKE_BUILD_TYPE}'")
-
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_CXX_SCAN_FOR_MODULES OFF)
 
