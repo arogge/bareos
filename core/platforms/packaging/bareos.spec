@@ -863,6 +863,7 @@ CFLAGS="${CFLAGS:-%build_cflags}" ; export CFLAGS ;
 CXXFLAGS="${CXXFLAGS:-%build_cxxflags}" ; export CXXFLAGS ;
 
 # use our own cmake call instead of cmake macro as it is different on different platforms/versions
+echo "cmake build type = ${CMAKE_BUILD_TYPE:-<unset>}"
 cmake  .. \
   -DCMAKE_VERBOSE_MAKEFILE=ON \
   -DCMAKE_INSTALL_PREFIX:PATH=/usr \
@@ -893,8 +894,6 @@ cmake  .. \
 %if 0%{?client_only}
   -Dclient-only=yes \
 %endif
-  -DCMAKE_CXX_FLAGS_RELEASE="" \
-  -DCMAKE_C_FLAGS_RELEASE="" \
   -Ddir-user=%{director_daemon_user} \
   -Ddir-group=%{daemon_group} \
   -Dsd-user=%{storage_daemon_user} \
@@ -920,6 +919,8 @@ cmake  .. \
 %endif
   -Dwebuiconfdir=%{_sysconfdir}/bareos-webui \
   -DVERSION_STRING=%version
+
+echo "cmake build type = ${CMAKE_BUILD_TYPE:-<unset>}"
 
 cat CMakeCache.txt
 
