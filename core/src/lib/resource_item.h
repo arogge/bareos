@@ -175,7 +175,7 @@ struct ResourceItem {
                const int type_,
                std::size_t offset_,
                BareosResource** allocated_resource_,
-               ResourceItemFlags&& resource_flags)
+               ResourceItemFlags resource_flags)
       : name{name_}
       , type{type_}
       , offset{offset_}
