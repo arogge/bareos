@@ -18,8 +18,6 @@
 #   02110-1301, USA.
 message("Entering ${CMAKE_CURRENT_SOURCE_DIR}")
 
-# message("build type is '${CMAKE_BUILD_TYPE}'")
-
 if(CMAKE_SYSTEM_NAME MATCHES "Windows")
   cmake_minimum_required(VERSION 3.25...3.31)
 else()
@@ -37,8 +35,11 @@ if(HAVE_MULTI_CONFIG)
   )
 endif()
 
-set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-set(CMAKE_CXX_SCAN_FOR_MODULES OFF)
+# as some CPM-provided packages do set CMAKE_BUILD_TYPE if it is not set, we set
+# a default. When there is user-provided CMAKE_C_FLAGS or CMAKE_CXX_FLAGS (also
+# via $CFLAGS $CXXFLAGS environment variables), use CustomFlags as dummy value
+# so no default-flags are added, otherwise use RelWithDebInfo to get reasonable
+# defaults flags.
 if(NOT CMAKE_BUILD_TYPE)
   if(CMAKE_C_FLAGS OR CMAKE_CXX_FLAGS)
     set(CMAKE_BUILD_TYPE "CustomFlags")
@@ -47,11 +48,25 @@ if(NOT CMAKE_BUILD_TYPE)
   endif()
 endif()
 
-
 include(BareosVersionFromGit)
 include(BareosExtractVersionInfo)
 
-project(bareos C CXX)
+project(
+  bareos
+  VERSION ${BAREOS_NUMERIC_VERSION}
+  DESCRIPTION "Bareos is a cross-network Open Source backup solution."
+  HOMEPAGE_URL https://www.bareos.com/
+  LANGUAGES C CXX
+)
+
+set(CMAKE_CXX_SCAN_FOR_MODULES OFF)
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+
+# required to set the PIE linker flags
+include(CheckPIESupported)
+check_pie_supported()
 
 include(RemoveNDebugFlag)
 include(BareosOutputDirectories)
