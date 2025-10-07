@@ -924,8 +924,6 @@ echo "cmake build type = ${CMAKE_BUILD_TYPE:-<unset>}"
 
 cat CMakeCache.txt
 
-exit 1
-
 %if 0%{?make_build:1}
 %make_build
 %else
